@@ -22,7 +22,7 @@ router.post("/register", async (req, res, next) => {
 })
 
 
-router.post("/login", async (req, res, next) => {
+router.post("/login",  async (req, res, next) => {
 	const authError = {
 		message: "You shall not pass!",
 	}
@@ -35,6 +35,10 @@ router.post("/login", async (req, res, next) => {
 			return res.status(401).json(authError)
 		}
 
+			const passwordValid = await bcrypt.compare(password, user.password)
+		if (!passwordValid) {
+			return res.status(401).json(authError)
+		}
 		
 		const payload = {
 			userId: user.id, 
